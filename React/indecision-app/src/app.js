@@ -1,27 +1,56 @@
 console.log('App js is running!');
 
-var user = {
-  myName: 'zc',
-  age: 10,
-  loc: 'Earth',
+const app = {
+  title: 'App title',
+  subtitle: 'Subtitle',
+  options: [],
 };
 
-var getLoc = (loc) => {
-  // return loc ? <p>Location: {loc}</p> : undefined;
-  if (loc) {
-    return <p>{loc}</p>;
+const onFormSubmit = (event) => {
+  event.preventDefault();
+  const option = event.target.elements.option.value;
+  if (option) {
+    app.options.push(option);
+    event.target.elements.option.value = '';
+    reRender();
   }
 };
 
-// JSX - Javascript XML
+const removeAll = () => {
+  app.options = [];
+  reRender();
+};
 
-var template = (
-  <div>
-    <h1>{user.myName.toUpperCase()}</h1>
-    {user.age && user.age >= 17 && <p>{user.age}</p>}
-    {getLoc(user.loc)}
-  </div>
-);
-var appRoot = document.getElementById('app');
+const onMakeDecision = () => {
+  const ranNum = Math.random();
+  console.log(ranNum);
+};
 
-ReactDOM.render(template, appRoot);
+const reRender = () => {
+  const appTemplate = (
+    <div>
+      <h1>{app.title}</h1>
+      {app.subtitle && <p>{app.subtitle}</p>}
+      <p>{app.options.length > 0 ? 'Here are your options:' : 'No options'}</p>
+      <p>{app.options.length ? app.options.length : 0}</p>
+
+      <ol>
+        {app.options.map((op) => (
+          <li key={op}>{op}</li>
+        ))}
+      </ol>
+      <button onClick={removeAll}>Remove All</button>
+      <button onClick={onMakeDecision}>Pick a random task</button>
+      <form onSubmit={onFormSubmit}>
+        <input type="text" name="option" />
+        <button>Add option!</button>
+      </form>
+    </div>
+  );
+
+  ReactDOM.render(appTemplate, appRoot);
+};
+
+const appRoot = document.getElementById('app');
+
+reRender();

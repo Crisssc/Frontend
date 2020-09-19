@@ -25,3 +25,25 @@ Pull out the data from the variable to the JSX:
 - boolean && Ignore [if boolean is true, it returns Ignore, if boolean is false, it return false!!!]
 {(user.age && user.age >= 17) && <p>{user.age}</p>} 
 So, if user age is larger than 17, user.age is shows up; if user age is not exist or less than 18, age won't show.
+
+Event and attributes:
+Different attributes in React DOM: (google it)
+- className
+- id
+- autoFocus
+- placeholder
+- blabla...
+
+The template is re-rendered when the state of data change. Only the specific part of the template is updated.
+
+Set up a form:
+disable the default behavior: refresh the whole page when form is submited.
+SyntheticEvent React
+- form events: onChange, onInput, onSubmit).
+- mouse events: onClick, onDrag, blabla
+code:
+const onFormSubmit = (event) => event.preventDefault();
+
+
+
+
