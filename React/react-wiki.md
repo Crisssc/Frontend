@@ -45,5 +45,72 @@ code:
 const onFormSubmit = (event) => event.preventDefault();
 
 
+React Component
+
+Class Component
+Create the react component: 
+- It requires a method to be defined: render(). render method return template.
+- Create nested component
+
+React Component Props
+- Components pass props to communicate to each other
+- access the props by: this.props
+
+Method Binding:
+- method defined outside the render() method cannot dirrectly access the prop value by this.props.blabla. 
+- You use bind().
+- Re-construct the Constructor: this.handleRemoveAll = this.handleRemoveAll.bind(this); // you bind the method once in the constructor and it is efficient.
+
+Small React App sample:
+- Set up default state object
+- change state based on event: setState((prevState)=>{...})
+- component re-rendered using new state value
+- start again at 3
+
+Sub-component could have sub state
+- For example, it has the error state to handle the error message when the input is invalid.
+
+Recap:
+- Props vs State
+- parent component ---(props(if any))---> child component
+- Props:
+- -- An object
+- -- Can be used when rendering
+- -- Changes (from parent) cause re-render
+- -- Come from above
+- -- Can't be changed by component itself
+- State
+- -- An object
+- -- Can be used when rendering
+- -- Changes cause re-renders
+- -- Defined in component itself
+- -- Can be changed by component itself
+
+
+Stateless Functional Component
+(Just presentation, not concern with managing complex state.)
+
+- Allow you to set the defaultprops for a component
+ComponentName.defaultProps = {
+	attribute: 'something here'
+}
+// but you need to remember to add props prameter in the constructor signiture
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
