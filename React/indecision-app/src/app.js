@@ -22,8 +22,8 @@ const removeAll = () => {
 };
 
 const onMakeDecision = () => {
-  const ranNum = Math.random();
-  console.log(ranNum);
+  const ranNum = Math.floor(Math.random() * app.options.length);
+  alert(app.options[ranNum]);
 };
 
 const reRender = () => {
@@ -32,15 +32,15 @@ const reRender = () => {
       <h1>{app.title}</h1>
       {app.subtitle && <p>{app.subtitle}</p>}
       <p>{app.options.length > 0 ? 'Here are your options:' : 'No options'}</p>
-      <p>{app.options.length ? app.options.length : 0}</p>
-
       <ol>
         {app.options.map((op) => (
           <li key={op}>{op}</li>
         ))}
       </ol>
       <button onClick={removeAll}>Remove All</button>
-      <button onClick={onMakeDecision}>Pick a random task</button>
+      <button disabled={app.options.length == 0} onClick={onMakeDecision}>
+        Pick a random task
+      </button>
       <form onSubmit={onFormSubmit}>
         <input type="text" name="option" />
         <button>Add option!</button>
