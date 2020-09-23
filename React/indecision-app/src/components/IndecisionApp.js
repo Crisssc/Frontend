@@ -34,6 +34,10 @@ class IndecisionApp extends React.Component {
     console.log('component will unmount');
   }
 
+  handleClearSelectedOption = () => {
+    this.setState(() => ({ selectedOption: undefined }));
+  };
+
   handleRemoveAllOptions = () => {
     this.setState(() => ({
       options: [],
@@ -70,17 +74,24 @@ class IndecisionApp extends React.Component {
     return (
       <div>
         <Header subtitle={subtitle} />
-        <Action
-          hasOption={this.state.options.length == 0}
-          handleOptionPick={this.handleOptionPick}
+        <div className="container">
+          <Action
+            hasOption={this.state.options.length == 0}
+            handleOptionPick={this.handleOptionPick}
+          />
+          <div className="widget">
+            <Options
+              options={this.state.options}
+              handleRemoveAllOptions={this.handleRemoveAllOptions}
+              handleRemoveOption={this.handleRemoveOption}
+            />
+            <AddOption handleAddOption={this.handleAddOption} />
+          </div>
+        </div>
+        <OptionModal
+          selectedOption={this.state.selectedOption}
+          handleClearSelectedOption={this.handleClearSelectedOption}
         />
-        <Options
-          options={this.state.options}
-          handleRemoveAllOptions={this.handleRemoveAllOptions}
-          handleRemoveOption={this.handleRemoveOption}
-        />
-        <AddOption handleAddOption={this.handleAddOption} />
-        <OptionModal selectedOption={this.state.selectedOption} />
       </div>
     );
   }

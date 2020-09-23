@@ -1,0 +1,11 @@
+// settomg file always come first
+// so that it can be accessed by others
+@import './base/setting';
+@import './base/base';
+@import './components/header';
+@import './components/container';
+@import './components/button';
+@import './components/modal';
+@import './components/widget';
+@import './components/option';
+@import './components/add-option';

@@ -106,6 +106,7 @@ Stateless Functional Component
 
 - Allow you to set the defaultprops for a component
   ` ComponentName.defaultProps = { attribute: 'something here' }`
+
   // but you need to _remember to add props as a parameter in the constructor signiture_
 
 Arrow function to the setState method:
@@ -153,3 +154,25 @@ devtool: 'cheap-module-eval-source-map', --> help you debug by locating which li
 devServer: blablabla
 
 new class properties synta
+
+## Style the app:
+
+SCSS set up
+
+- add npm style loader, css loader and sass loader
+- in the webpack.config.js file,
+  > rules: [{test: /\.scss\$/, use: ['style-loader', 'css-loader', 'sass-loader'],}]
+
+CSS Reset
+
+- CSS reset makes sure all browsers are starting from the same base.
+- normalize css
+- npm add normalize.css@7.0.0
+- small change in the webpack config file (add a ? in the test)
+  > {test: /\.s?css\$/,use: ['style-loader', 'css-loader', 'sass-loader'],}
+
+Theming with variables
+
+- setting file always come first so that variables inside can be accessed by others
+
+(晚点再补些 note)
