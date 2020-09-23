@@ -130,8 +130,7 @@ Lifecycle methods in React: let you run code at specific times during a componen
 Data in LocalStorage is stored in String format, so we use JSON method.
 By using localStorage, you use componentDidMount to fetch data, use componentDidUpdate to store data.
 
-=========================
-WebPack:
+### WebPack
 
 - entry
 - output {path, filename}
