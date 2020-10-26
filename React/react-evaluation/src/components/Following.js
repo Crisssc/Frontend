@@ -20,8 +20,14 @@ class Following extends React.Component {
           ) : (
             <Segment.Group>
               <Segment>
-                {this.props.pageIndex * 10} / {this.props.user.following} of the
-                following:{' '}
+                {this.props.following.length === 0 ? (
+                  <div>0 following</div>
+                ) : (
+                  <div>
+                    {this.props.pageIndex * 10} / {this.props.user.following} of
+                    the following:
+                  </div>
+                )}
               </Segment>
               <Segment.Group>
                 <List selection verticalAlign="middle">
