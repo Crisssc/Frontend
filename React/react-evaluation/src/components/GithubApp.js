@@ -53,8 +53,8 @@ class GithubApp extends React.Component {
         `https://api.github.com/users/${user}/following?page=${pageIndex}&per_page=${pageSize}`,
         {
           auth: {
-            username: 'Crisssc',
-            password: '0d9c1e6a6c9219de56f64bf451ef7ef9fee932ff',
+            username: 'unknown',
+            password: 'secret',
           },
         }
       )
