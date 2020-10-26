@@ -34,9 +34,15 @@ class Following extends React.Component {
                     </List.Item>
                   ))}
                 </List>
-                <Button basic color="blue" onClick={this.handleLoadMore}>
-                  Load more
-                </Button>
+                {this.props.loading ? (
+                  <Button loading primary>
+                    Loading
+                  </Button>
+                ) : (
+                  <Button basic color="blue" onClick={this.handleLoadMore}>
+                    Load more
+                  </Button>
+                )}
               </Segment.Group>
             </Segment.Group>
           )}

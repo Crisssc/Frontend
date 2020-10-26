@@ -12,6 +12,7 @@ import {
 import React from 'react';
 
 const Home = (props) => {
+  console.log(props.errors.length);
   return (
     <Segment style={{ height: '100vh' }}>
       {props.loading ? (

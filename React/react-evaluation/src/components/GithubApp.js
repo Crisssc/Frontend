@@ -16,15 +16,9 @@ class GithubApp extends React.Component {
   };
 
   handleSubmitInput = (value) => {
-    console.log('from app', value);
     this.setState({ loading: true });
     axios
-      .get(`https://api.github.com/users/${value}`, {
-        auth: {
-          username: 'Crisssc',
-          password: '0d9c1e6a6c9219de56f64bf451ef7ef9fee932ff',
-        },
-      })
+      .get(`https://api.github.com/users/${value}`)
       .then((user) => {
         console.log(user.data);
         this.setState({
@@ -32,6 +26,7 @@ class GithubApp extends React.Component {
           user: user.data,
           loading: false,
           errors: [],
+          following: [],
         });
       })
       .catch((err) => {
@@ -50,13 +45,7 @@ class GithubApp extends React.Component {
     this.setState({ loading: true });
     axios
       .get(
-        `https://api.github.com/users/${user}/following?page=${pageIndex}&per_page=${pageSize}`,
-        {
-          auth: {
-            username: 'unknown',
-            password: 'secret',
-          },
-        }
+        `https://api.github.com/users/${user}/following?page=${pageIndex}&per_page=${pageSize}`
       )
       .then((following) => {
         // console.log('following', following.data);
