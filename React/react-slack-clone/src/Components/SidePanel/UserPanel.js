@@ -1,7 +1,6 @@
-import { Dropdown, Grid, Header, Icon } from 'semantic-ui-react';
+import { Dropdown, Grid, Header, Icon, Image } from 'semantic-ui-react';
 
 import React from 'react';
-import { connect } from 'react-redux';
 import firebase from '../../firebase';
 
 class UserPanel extends React.Component {
@@ -41,6 +40,8 @@ class UserPanel extends React.Component {
   };
 
   render() {
+    const { user } = this.state;
+    // console.log('user.photoURL', user.photoURL);
     // console.log('from SidePanel', currentUser);
     // console.log(this.state.user);
     return (
@@ -52,22 +53,23 @@ class UserPanel extends React.Component {
               <Icon name="code" />
               <Header.Content>DevChat</Header.Content>
             </Header>
+            {/* User Dropdown */}
+            <Header style={{ padding: '0.25em' }} as="h4" inverted>
+              <Dropdown
+                trigger={
+                  <span>
+                    <Image src={user.photoURL} spaced="right" avatar />
+                    {user.displayName}
+                  </span>
+                }
+                options={this.dropdownOptions()}
+              />
+            </Header>
           </Grid.Row>
-          {/* User Dropdown */}
-          <Header style={{ padding: '0.25em' }} as="h4" inverted>
-            <Dropdown
-              trigger={<span>{this.state.user.displayName}</span>}
-              options={this.dropdownOptions()}
-            />
-          </Header>
         </Grid.Column>
       </Grid>
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  curerntUser: state.user.curerntUser,
-});
-
-export default connect(mapStateToProps)(UserPanel);
+export default UserPanel;
