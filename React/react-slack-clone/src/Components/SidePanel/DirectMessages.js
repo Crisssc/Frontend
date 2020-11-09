@@ -21,6 +21,16 @@ class DirectMessages extends React.Component {
     }
   }
 
+  componentWiilUnmount() {
+    this.removeListeners();
+  }
+
+  removeListeners = () => {
+    this.state.connectedRef.off();
+    this.state.presenceRef.off();
+    this.state.usersRef.off();
+  };
+
   addListeners = (currentUserUid) => {
     let loadedUsers = [];
     this.state.usersRef.on('child_added', (snap) => {
@@ -65,7 +75,7 @@ class DirectMessages extends React.Component {
       if (user.uid === userId) {
         user['status'] = `${connected ? 'online' : 'offline'}`;
       }
-      return acc.concet(user);
+      return acc.concat(user);
     }, []);
     this.setState({ users: updatedUsers });
   };

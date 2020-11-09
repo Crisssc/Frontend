@@ -90,6 +90,10 @@ class Channels extends React.Component {
     // Go to different route, remove the listeners that we setup.
     // off() makes sure the refs is turned off
     this.state.channelsRef.off();
+
+    this.state.channels.forEach((channel) => {
+      this.state.channelsRef.child(channel.id).off();
+    });
   };
 
   setFirstChannel = () => {

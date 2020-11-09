@@ -4,33 +4,77 @@ import Message from './Message';
 import MessageForm from './MessageForm';
 import MessagesHeader from './MessagesHeader';
 import React from 'react';
+import Skeleton from './Skeleton';
+import Typing from './Typing';
+import { connect } from 'react-redux';
 import firebase from '../../firebase';
+import { setUserPosts } from '../../actions';
 
 class Messages extends React.Component {
   state = {
-    privateChannel: this.props.setPrivateChannel,
     privateMessageRef: firebase.database().ref('privateMessages'),
     messagesRef: firebase.database().ref('message'),
     usersRef: firebase.database().ref('user'),
+    typingRef: firebase.database().ref('typing'),
+    connectedRef: firebase.database().ref('info/connected'),
     messages: [],
-    messagesLoading: true,
+    typingUsers: [],
+    searchResults: [],
+    privateChannel: this.props.setPrivateChannel,
     channel: this.props.currentChannel,
     user: this.props.currentUser,
+    messagesLoading: true,
     progressBar: false,
     isChannelStarred: false,
+    searchLoading: false,
     numUniqueUsers: '',
     searchTerm: '',
-    searchLoading: false,
-    searchResults: [],
+    listeners: [],
   };
 
   componentDidMount() {
-    const { channel, user } = this.state;
+    const { channel, user, listeners } = this.state;
+
     if (channel && user) {
+      this.removeListeners(listeners);
       this.addListeners(channel.id);
       this.addUserStarsListener(channel.id, user.uid);
     }
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.messagesEnd) {
+      this.scrollToBottom();
+    }
+  }
+
+  componentWillUnmount() {
+    this.removeListeners(this.state.listeners);
+    this.state.connectedRef.off();
+  }
+
+  removeListeners = (listeners) => {
+    listeners.forEach((listener) => {
+      listener.ref.child(listener.id).off(listener.event);
+    });
+  };
+
+  addToListeners = (id, ref, event) => {
+    const index = this.state.listeners.findIndex((listener) => {
+      return (
+        listener.id === id && listener.ref === ref && listener.event === event
+      );
+    });
+
+    if (index === -1) {
+      const newListener = { id, ref, event };
+      this.setState({ listeners: this.state.listeners.concat(newListener) });
+    }
+  };
+
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
+  };
 
   addUserStarsListener = (channelId, userId) => {
     this.state.usersRef
@@ -81,6 +125,45 @@ class Messages extends React.Component {
 
   addListeners = (channelId) => {
     this.addMessageListener(channelId);
+    this.addTypingListeners(channelId);
+  };
+
+  addTypingListeners = (channelId) => {
+    let typingUsers = [];
+    this.state.typingRef.child(channelId).on('child_added', (snap) => {
+      if (snap.key !== this.state.user.uid) {
+        typingUsers = typingUsers.concat({
+          id: snap.key,
+          name: snap.val(),
+        });
+        this.setState({ typingUsers });
+      }
+    });
+    this.addToListeners(channelId, this.state.typingRef, 'child_added');
+
+    this.state.typingRef.child(channelId).on('child_removed', (snap) => {
+      const index = typingUsers.findIndex((user) => user.id === snap.key);
+      if (index !== -1) {
+        typingUsers = typingUsers.filter((user) => user.id !== snap.key);
+        this.setState({ typingUsers });
+      }
+    });
+
+    this.addToListeners(channelId, this.state.typingRef, 'child_removed');
+
+    this.state.connectedRef.on('value', (snap) => {
+      if (snap.val() === true) {
+        this.state.typingRef
+          .child(channelId)
+          .child(this.state.user.uid)
+          .onDisconnect()
+          .remove((err) => {
+            if (err !== null) {
+              console.log(err);
+            }
+          });
+      }
+    });
   };
 
   addMessageListener = (channelId) => {
@@ -94,7 +177,25 @@ class Messages extends React.Component {
         messagesLoading: false,
       });
       this.countUniqueUsers(loadedMessages);
+      this.countUserPosts(loadedMessages);
     });
+
+    this.addToListeners(channelId, ref, 'child_added');
+  };
+
+  countUserPosts = (messages) => {
+    let userPosts = messages.reduce((acc, message) => {
+      if (message.user.name in acc) {
+        acc[message.user.name].count += 1;
+      } else {
+        acc[message.user.name] = {
+          avatar: message.user.avatar,
+          count: 1,
+        };
+      }
+      return acc;
+    }, {});
+    this.props.setUserPosts(userPosts);
   };
 
   countUniqueUsers = (messages) => {
@@ -155,6 +256,32 @@ class Messages extends React.Component {
     setTimeout(() => this.setState({ searchLoading: false }), 500);
   };
 
+  displayTypingUsers = (users) => {
+    users.length > 0 &&
+      users.map((user) => (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: '02.em',
+          }}
+          key={user.id}
+        >
+          <span className="user__typing">{user.name} is typing</span> <Typing />
+        </div>
+      ));
+  };
+
+  displayMessageSkeleton = (loading) => {
+    return loading ? (
+      <React.Fragment>
+        {[...Array(10)].map((_, i) => (
+          <Skeleton key={i} />
+        ))}
+      </React.Fragment>
+    ) : null;
+  };
+
   render() {
     const {
       messagesRef,
@@ -168,6 +295,8 @@ class Messages extends React.Component {
       searchLoading,
       privateChannel,
       isChannelStarred,
+      typingUsers,
+      messagesLoading,
     } = this.state;
     return (
       <React.Fragment>
@@ -185,10 +314,12 @@ class Messages extends React.Component {
           <Comment.Group
             className={progressBar ? 'messages__progress' : 'messages'}
           >
-            {/** Messages */}
+            {this.displayMessageSkeleton(messagesLoading)}
             {searchTerm
               ? this.displayMessages(searchResults)
               : this.displayMessages(messages)}
+            {this.displayTypingUsers(typingUsers)}
+            <div ref={(node) => (this.messagesEnd = node)}></div>
           </Comment.Group>
         </Segment>
 
@@ -205,4 +336,4 @@ class Messages extends React.Component {
   }
 }
 
-export default Messages;
+export default connect(null, { setUserPosts })(Messages);

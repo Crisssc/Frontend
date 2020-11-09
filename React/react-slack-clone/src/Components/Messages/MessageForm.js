@@ -1,4 +1,7 @@
+import 'emoji-mart/css/emoji-mart.css';
+
 import { Button, Input, Segment } from 'semantic-ui-react';
+import { Picker, emojiIndex } from 'emoji-mart';
 
 import FileModal from './FileModal';
 import ProgressBar from './ProgressBar';
@@ -18,7 +21,15 @@ class MessageForm extends React.Component {
     loading: false,
     errors: [],
     modal: false,
+    emojiPicker: false,
   };
+
+  componentWillUnmount() {
+    if (this.state.uploadTask !== null) {
+      this.state.uploadTask.cancel();
+      this.setState({ uploadTask: null });
+    }
+  }
 
   openModal = () => this.setState({ modal: true });
 
@@ -87,7 +98,7 @@ class MessageForm extends React.Component {
   getPath = () => {
     const { isPrivateChannel } = this.props;
     if (isPrivateChannel) {
-      return `chat/private-${this.state.channel.id}`;
+      return `chat/private/${this.state.channel.id}`;
     } else {
       return 'chat/public';
     }
@@ -157,6 +168,41 @@ class MessageForm extends React.Component {
       });
   };
 
+  handleTogglePicker = () => {
+    this.setState({ emojiPicker: !this.state.emojiPicker });
+  };
+
+  handleAddEmoji = (emoji) => {
+    const oldMessage = this.state.message;
+    const newMessage = this.colonToUnicode(` ${oldMessage} ${emoji.colons} `);
+    this.setState({ message: newMessage, emojiPicker: false });
+
+    // add focus function when you hover the input field
+    setTimeout(() => this.messageInputRef.focus(), 0);
+  };
+
+  colonToUnicode = (message) => {
+    return message.replace(/:[A-Za-z0-9_+-]+:/g, (x) => {
+      x = x.replace(/:/g, '');
+      let emoji = emojiIndex.emojis[x];
+      if (typeof emoji !== 'undefined') {
+        let unicode = emoji.native;
+        if (typeof unicode != 'undefined') {
+          return unicode;
+        }
+      }
+
+      x = ':' + x + ':';
+      return x;
+    });
+  };
+
+  handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      this.sendMessage();
+    }
+  };
+
   render() {
     const {
       message,
@@ -165,17 +211,35 @@ class MessageForm extends React.Component {
       modal,
       uploadState,
       percentUploaded,
+      emojiPicker,
     } = this.state;
     return (
       <Segment className="message__form">
+        {emojiPicker && (
+          <Picker
+            onSelect={this.handleAddEmoji}
+            set="apple"
+            className="emojiPicker"
+            title="Pick your emoji"
+            emoji="point_up"
+          />
+        )}
         <Input
           fluid
           name="message"
           onChange={this.handleChange}
+          onKeyPress={this.handleKeyDown}
           value={message}
+          ref={(node) => (this.messageInputRef = node)}
           className={this.handleInputError(errors, 'message')}
           style={{ marginBottom: '0.7em' }}
-          label={<Button icon={'add'} />}
+          label={
+            <Button
+              icon={emojiPicker ? 'close' : 'add'}
+              content={emojiPicker ? 'Close' : null}
+              onClick={this.handleTogglePicker}
+            />
+          }
           labelPosition="left"
           placeholder="Write your message~"
         />

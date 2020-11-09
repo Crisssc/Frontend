@@ -39,7 +39,7 @@ class Login extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    if (this.isFormValie(this.state)) {
+    if (this.isFormValid(this.state)) {
       this.setState({ errors: [], loading: true });
 
       firebase
@@ -61,7 +61,7 @@ class Login extends React.Component {
     }
   };
 
-  isFormValie = ({ email, password }) => email && password;
+  isFormValid = ({ email, password }) => email && password;
 
   render() {
     const { email, password, errors, loading } = this.state;
