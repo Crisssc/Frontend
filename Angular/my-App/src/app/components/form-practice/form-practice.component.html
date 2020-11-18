@@ -1,0 +1,30 @@
+<form [formGroup]="myForm">
+  <header>Form</header>
+  <input
+    type="text"
+    name="firstname"
+    placeholder="firstname"
+    formControlName="firstName"
+    required
+  />
+  <input
+    type="text"
+    name="lastname"
+    placeholder="lastname"
+    formControlName="lastName"
+    required
+  />
+</form>
+
+<button
+  [ngClass]="{ button: true, 'like-clicked': count.like.clicked }"
+  (click)="clickLike()"
+>
+  Like | {{ count.like.count }}
+</button>
+<button
+  [ngClass]="{ button: true, 'dislike-clicked': count.dislike.clicked }"
+  (click)="clickDislike()"
+>
+  Dislike | {{ count.dislike.count }}
+</button>
