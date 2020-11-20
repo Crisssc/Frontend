@@ -1,0 +1,38 @@
+.header {
+  text-align: center;
+}
+
+.cards-list {
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  width: 100px;
+  height: 150px;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transform-origin: center right;
+  transition: transform 1s;
+}
+
+.card img {
+  width: 100px;
+  height: 150px;
+}
+
+.card.is-flipped {
+  transform: translateX(-100%) rotateY(-180deg);
+}
+
+.card__face {
+  position: absolute;
+  backface-visibility: hidden;
+}
+
+.card__face--front {
+}
+
+.card__face--back {
+  transform: rotateY(180deg);
+}
