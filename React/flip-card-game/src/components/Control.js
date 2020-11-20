@@ -23,13 +23,13 @@ class Control extends React.Component {
   render() {
     return (
       <div className="control-container">
+        <label>Enter the # of card pairs: </label>
         <input
           type="text"
           value={this.state.inputValue}
           onChange={this.inputOnChange}
           onKeyUp={this.inputOnSubmit}
-        />{' '}
-        <span> of pair -</span>
+        />
         <button onClick={this.onReset}>Reset</button>
       </div>
     );

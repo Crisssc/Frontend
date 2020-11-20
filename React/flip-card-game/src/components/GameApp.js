@@ -30,11 +30,11 @@ class GameApp extends React.Component {
   render() {
     return (
       <div className="game_container">
+        <Cards cardNum={this.state.cardNum} cards={this.state.cards} />
         <Control
           resetHandler={this.resetHandler}
           getCardNum={this.getCardNum}
         />
-        <Cards cardNum={this.state.cardNum} cards={this.state.cards} />
       </div>
     );
   }

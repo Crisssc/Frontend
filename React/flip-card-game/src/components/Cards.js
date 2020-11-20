@@ -34,7 +34,15 @@ class Cards extends React.Component {
 
   onFlipAction = (cardIndex) => {
     let curPair = this.state.pair;
-    this.setState({ pair: [...curPair, cardIndex] });
+    if (curPair.length < 1) {
+      this.setState({ pair: [...curPair, cardIndex] });
+    } else {
+      if (curPair[0] === cardIndex) {
+        this.setState({ pair: [] });
+      } else {
+        this.setState({ pair: [...curPair, cardIndex] });
+      }
+    }
     this.pairCheck();
   };
 
