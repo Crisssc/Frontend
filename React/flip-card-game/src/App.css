@@ -1,3 +1,21 @@
+/* Control */
+.control-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.control-container input {
+  width: 30px;
+}
+
+.control-container button {
+  color: black;
+  background-color: white;
+  border-color: black;
+  margin: 10px;
+}
+
+/* Cards */
 .header {
   text-align: center;
 }

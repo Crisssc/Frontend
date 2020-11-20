@@ -1,10 +1,11 @@
 import cards from './../components/images';
 
-let count = 0;
-
-export default function shuffle() {
+export default function shuffle(val) {
+  let count = 0;
+  let newCard = cards.slice(0, val);
+  console.log('generate:s', val, 'pair of cards');
   //duplicate original cards
-  let list = [...cards, ...cards].sort(() => Math.random() - 0.5);
+  let list = [...newCard, ...newCard].sort(() => Math.random() - 0.5);
   return list.map((img) => {
     return { index: count++, flip: false, match: false, ...img };
   });

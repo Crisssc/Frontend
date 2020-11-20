@@ -4,7 +4,6 @@ import shuffle from './../utils/shuffle';
 
 class Cards extends React.Component {
   state = {
-    cards: shuffle(),
     pair: [],
   };
 
@@ -15,16 +14,10 @@ class Cards extends React.Component {
   pairCheck = () => {
     const { pair } = this.state;
     if (pair.length === 2) {
-      console.log('check the pair', pair);
-      let card1 = this.state.cards[pair[0]];
-      let card2 = this.state.cards[pair[1]];
-      let oldCards = this.state.cards;
+      let card1 = this.props.cards[pair[0]];
+      let card2 = this.props.cards[pair[1]];
+      let oldCards = this.props.cards;
       if (card1.id === card2.id) {
-        console.log('matched');
-        // let id = card1.id;
-        // let oldCards = [...this.state.cards].filter((c) => c.id === id);
-        // this.setState({ cards: oldCards });
-
         oldCards[pair[0]].match = true;
         oldCards[pair[1]].match = true;
         this.setState({ cards: [...oldCards] });
@@ -52,7 +45,7 @@ class Cards extends React.Component {
           <h1 className="header">CARD FLIP GAME</h1>
         </div>
         <div className="cards-list">
-          {this.state.cards.map((card) => (
+          {this.props.cards.map((card) => (
             <Card
               key={card.index}
               card={card}

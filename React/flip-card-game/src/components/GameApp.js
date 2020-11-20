@@ -10,11 +10,11 @@ class GameApp extends React.Component {
   };
 
   getCardNum = (val) => {
-    this.setState({ cardNum: val });
-  };
-
-  generateCards = () => {
-    this.setState({ cards: shuffle() });
+    if (!isNaN(val)) {
+      this.setState({ cardNum: val, cards: shuffle(val) });
+    }
+    // console.log(this.state.cards);
+    return this.state.cardNum;
   };
 
   removeMatchedCards = (cardInput) => {
@@ -23,17 +23,21 @@ class GameApp extends React.Component {
     this.setState({ cards: oldCards.filter((c) => c.id !== cardInput.id) });
   };
 
+  resetHandler = () => {
+    this.setState({ cards: [] });
+  };
+
   render() {
     return (
       <div className="game_container">
-        <Cards />
+        <Control
+          resetHandler={this.resetHandler}
+          getCardNum={this.getCardNum}
+        />
+        <Cards cardNum={this.state.cardNum} cards={this.state.cards} />
       </div>
     );
   }
 }
 
 export default GameApp;
-// <Control
-//   getCardNum={this.getCardNum}
-//   generateCards={this.generateCards}
-// />

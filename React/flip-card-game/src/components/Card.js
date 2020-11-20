@@ -8,15 +8,11 @@ class Card extends React.Component {
     id: this.props.id,
   };
 
-  // componentDidMount() {
-  //   this.setState({ card: this.props.card });
-  // }
-
   onCardClick = (card) => {
-    // let newFlip = this.state.flip;
-    // this.setState({ flip: !newFlip });
-    card.flip = !card.flip;
-    this.props.onFlipAction(card.index);
+    if (!card.match) {
+      card.flip = !card.flip;
+      this.props.onFlipAction(card.index);
+    }
   };
 
   handleClassName = (flip) => (flip ? 'card is-flipped' : 'card');

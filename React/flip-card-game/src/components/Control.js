@@ -10,27 +10,27 @@ class Control extends React.Component {
   };
 
   inputOnSubmit = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && event.target.value !== '') {
       this.props.getCardNum(this.state.inputValue);
       this.setState({ inputValue: '' });
     }
   };
 
-  startGame = () => {
-    this.props.generateCards();
+  onReset = () => {
+    this.props.resetHandler();
   };
 
   render() {
     return (
-      <div>
+      <div className="control-container">
         <input
           type="text"
           value={this.state.inputValue}
           onChange={this.inputOnChange}
           onKeyUp={this.inputOnSubmit}
-        />
-        <button onClick={this.startGame}>start</button>
-        <button>reset(not done yet)</button>
+        />{' '}
+        <span> of pair -</span>
+        <button onClick={this.onReset}>Reset</button>
       </div>
     );
   }
