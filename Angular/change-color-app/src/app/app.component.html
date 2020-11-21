@@ -1,0 +1,15 @@
+<div class="app-container">
+  <h1 class="head" [ngClass]="selected">Color App</h1>
+</div>
+<div
+  class="card"
+  *ngFor="let item of list"
+  [ngClass]="item.selected ? item.color : ''"
+>
+  <app-card
+    [card]="item.card"
+    [selected]="item.selected"
+    [color]="item.color"
+    (cardOnClick)="cardOnClick($event)"
+  ></app-card>
+</div>
