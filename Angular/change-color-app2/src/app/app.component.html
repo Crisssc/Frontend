@@ -1,0 +1,11 @@
+<h1 [ngStyle]="{'text-align': 'center', 'color': titleColor}"><strong>
+  HEADER 
+</strong></h1>
+
+<div class="context-container">
+  <app-context-container
+    *ngFor = "let context of contextInfo" class="container" [context]="context"
+    [ngStyle]="{border: titleColor === context.color ? '5px solid ' + titleColor : '5px solid transparent'}"
+    (changeBorder)="changeBorder($event)"
+  ></app-context-container>
+</div>

@@ -1,0 +1,10 @@
+<div class="contextinfo_container">
+  <h2 class="title">
+    {{context.title}}
+  </h2>
+  <p class="info">
+    {{context.content}}
+  </p>
+  <button (click)="clickBtn()" [ngStyle]="{background: context.color}">Click</button>
+</div>
+

@@ -10,20 +10,20 @@ class MyPro {
   }
 
   resolve(data) {
-    if (this.status === 'pending') {
+    // if (this.status === 'pending') {
       this.value = data;
       this.status = 'resolved';
       console.log(2);
       this.onResolveCallBacks.forEach((callback) => callback());      
-    }
+    // }
   }
 
   reject(error) {
-    if (this.status === 'pending') {
+    // if (this.status === 'pending') {
       this.error = error;
       this.status = 'rejected';
       this.onRejectCallBacks.forEach((callback) => callback());      
-    }
+    // }
   }
 
   then(callback) {
@@ -67,4 +67,4 @@ let thenObj = myP.then(data => {
   console.log(7, data);
 });
 
-console.log(thenObj);
+// console.log(thenObj);

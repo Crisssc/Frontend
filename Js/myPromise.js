@@ -15,12 +15,12 @@ class MyPromise {
     executer(this.resolve.bind(this), this.reject.bind(this));
   }
 
-  resolve (data) {
+  resolve(data) {
     this.result = data;
     this.result ? this.success = true : this.success = false;
   }
 
-  reject (err) {
+  reject(err) {
     this.error = err;
     this.error ? this.fail = true : this.fail = false;
     console.log('err');
@@ -41,11 +41,13 @@ class MyPromise {
 }
 
 const myPro = new MyPromise((res, rej) => {
-  const result = 'hi from the myPromise';
-  setTimeout(() => {
-    res(result);
-  }, 1000);
+  // const result = 'hi from the myPromise';
+  // setTimeout(() => {
+  //   res(result);
+  // }, 1000);
   // res(result);
+  const value = 'value';
+  res(value);
 })
 
 myPro.then((data) => console.log('data: ', data));
