@@ -1,0 +1,8 @@
+<div>
+  <input placeholder="auto-complete-field" type="text" list="countries" name="country" [(ngModel)]="selected" />
+  <datalist id="countries">
+    <select>
+      <option *ngFor="let c of countryList" [value]="c.name"></option>
+    </select>
+  </datalist>
+</div>

@@ -1,0 +1,16 @@
+<div>
+  <header>
+    <h3 [ngStyle]="{'text-align': 'center', 'font-size' : '2rem'}">SEARCH HERE</h3>
+  </header>
+  <form #f="ngForm" (ngSubmit)="onSearch()" class="example-form">
+    <mat-form-field class="example-full-width">
+      <input type="text" placeholder="Search here..." aria-label="Number" matInput [formControl]="searchControl"
+        [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option *ngFor="let option of searchInputObs$ | async" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+</div>
